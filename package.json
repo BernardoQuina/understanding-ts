@@ -1,0 +1,14 @@
+{
+  "name": "understanding-typescript",
+  "version": "1.0.0",
+  "description": "Typescript Tutorial",
+  "main": "index.js",
+  "scripts": {
+    "start": "lite-server"
+  },
+  "author": "Bernardo-Quina <bernardoquina@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "lite-server": "^2.6.1"
+  }
+}
