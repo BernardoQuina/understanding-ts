@@ -1,20 +1,17 @@
-function add(n1: number, n2: number, showResult: boolean, phrase: string) {
-  if(showResult && phrase) {
-    console.log(phrase, n1 + n2)
-  } else {
-    return n1 + n2
-  }
+const person = {
+  name: 'Bernardo',
+  age: 24,
+  hobbies: ['Sports', 'Cooking']
 }
 
-// Type number
-const number1 = 5
-const number2 = 2.8
+let favoriteActivities: string[]
 
-// Type boolean
-const printResult = true
+favoriteActivities = ['Sports', 'Programming']
 
-// Type string
-const resultPhrase = 'Result is:'
+console.log(person.name)
 
-const result = add(number1, number2, printResult, resultPhrase)
-console.log(result)
+for (const hobby of person.hobbies) {
+   // allows to use this function because it inferred it would be a string
+  console.log(hobby.toUpperCase())
+  // console.log(hobby.map()) throws: Property 'map' does not exist on type 'string'
+}
