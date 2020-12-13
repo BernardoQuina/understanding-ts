@@ -1,33 +1,24 @@
-var person = {
-    name: 'Bernardo',
-    age: 24,
-    hobbies: ['Sports', 'Cooking'],
-    role: [2, 'author']
-};
-// person.role.push('admin') Allowed even though its a tuple
-// person.role[1] = 10 Source has 3 element(s) but target allows only 2
-// person.role = [0, 'admin', 'user'] Source has 3 element(s) but target allows only 2
-var favoriteActivities;
-favoriteActivities = ['Sports', 'Programming'];
-console.log(person.name);
-for (var _i = 0, _a = person.hobbies; _i < _a.length; _i++) {
-    var hobby = _a[_i];
-    // allows to use this function because it inferred it would be a string
-    console.log(hobby.toUpperCase());
-    // console.log(hobby.map()) throws: Property 'map' does not exist on type 'string'
+function combine(input1, // union type
+input2, resultConversion // union & literal type
+) {
+    var result;
+    if ((typeof input1 === 'number' && typeof input2 === 'number') ||
+        resultConversion === 'as-number') {
+        result = +input1 + +input2;
+    }
+    else {
+        result = input1.toString() + input2.toString();
+    }
+    // if (resultConversion === 'as-number') {
+    //   return +result
+    // } else {
+    //   return result.toString()
+    // }
+    return result;
 }
-var Role;
-(function (Role) {
-    Role[Role["ADMIN"] = 0] = "ADMIN";
-    Role[Role["READ_ONLY"] = 1] = "READ_ONLY";
-    Role[Role["AUTHOR"] = 2] = "AUTHOR";
-})(Role || (Role = {}));
-var person2 = {
-    name: 'Bernardo',
-    age: 24,
-    hobbies: ['Sports', 'Cooking'],
-    role: Role.AUTHOR
-};
-if (person2.role === Role.AUTHOR) {
-    console.log('is author');
-}
+var combinedAges = combine(30, 26, 'as-number');
+console.log(combinedAges);
+var combinedStringAges = combine('30', '26', 'as-number');
+console.log(combinedStringAges);
+var combinedNames = combine('Max', 'Anna', 'as-text');
+console.log(combinedNames);
