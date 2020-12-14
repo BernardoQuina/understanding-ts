@@ -1,9 +1,13 @@
+type Combinable = number | string // type alias / custom type
+
+type ConversionDescriptor = 'as-number' | 'as-text'
+
 function combine(
-  input1: number | string, // union type
-  input2: number | string,
-  resultConversion: 'as-number' | 'as-text' // union & literal type
+  input1: Combinable, // union type
+  input2: Combinable,
+  resultConversion: ConversionDescriptor // union & literal type
 ) {
-  let result: string | number
+  let result: Combinable
 
   if (
     (typeof input1 === 'number' && typeof input2 === 'number') ||
