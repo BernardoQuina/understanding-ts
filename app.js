@@ -1,24 +1,25 @@
-function combine(input1, // union type
-input2, resultConversion // union & literal type
-) {
-    var result;
-    if ((typeof input1 === 'number' && typeof input2 === 'number') ||
-        resultConversion === 'as-number') {
-        result = +input1 + +input2;
-    }
-    else {
-        result = input1.toString() + input2.toString();
-    }
-    // if (resultConversion === 'as-number') {
-    //   return +result
-    // } else {
-    //   return result.toString()
-    // }
-    return result;
+function add(n1, n2) {
+    return n1 + n2;
 }
-var combinedAges = combine(30, 26, 'as-number');
-console.log(combinedAges);
-var combinedStringAges = combine('30', '26', 'as-number');
-console.log(combinedStringAges);
-var combinedNames = combine('Max', 'Anna', 'as-text');
-console.log(combinedNames);
+// Type void because it doesn't have a return. Type undefined must have a return
+function printResult(num) {
+    console.log('Result: ' + num);
+}
+// callback function
+function addAndHandle(n1, n2, cb) {
+    var result = n1 + n2;
+    cb(result);
+}
+printResult(add(5, 12));
+// let combinedValues: Function
+// combinedValues = add
+// combinedValues = 5             throws error because its not a function
+// combinedValues = printResult   its admissable
+// set both parameters and result type of a function
+var combinedValues;
+combinedValues = add; // admissable
+// combinedValues = printResult | error: printResult params and result types don't match
+console.log(combinedValues(8, 8));
+addAndHandle(10, 20, function (result) {
+    console.log(result);
+});
