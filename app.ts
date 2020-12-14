@@ -1,36 +1,22 @@
-function add(n1: number, n2: number) {
-  return n1 + n2
+let userInput: unknown
+
+let userName: string
+
+userInput = 5
+userInput = 'Max'
+
+// userName = userInput throws error unlike if it was "any" type
+
+// this works because we checked the unknown type before assigning it
+if (typeof userInput === 'string') {
+  userName = userInput
 }
 
-// Type void because it doesn't have a return. Type undefined must have a return
-function printResult(num: number) {
-  console.log('Result: ' + num)
+function generateError(message: string, code: number): never {
+  throw { message, errorCode: code }
+  // while (true) {} also never returns since its an infinite loop
 }
 
-// callback function
-function addAndHandle(n1: number, n2: number, cb: (num: number) => void) {
-  const result = n1 + n2
-  cb(result)
-}
-
-printResult(add(5, 12))
-
-// let combinedValues: Function
-
-// combinedValues = add
-
-// combinedValues = 5             throws error because its not a function
-// combinedValues = printResult   its admissable
-
-// set both parameters and result type of a function
-let combinedValues: (a: number, b: number) => number
-
-combinedValues = add // admissable
-// combinedValues = printResult | error: printResult params and result types don't match
-
-
-console.log(combinedValues(8, 8))
-
-addAndHandle(10, 20, (result) => {
-  console.log(result)
-})
+// since this function will always crash the script or at least this part of the script
+// We can assign the never type because it will never return anything
+generateError('An error occurred!', 500)
