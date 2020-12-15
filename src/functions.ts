@@ -1,9 +1,9 @@
-function add(n1: number, n2: number) {
+function add2(n1: number, n2: number) {
   return n1 + n2
 }
 
 // Type void because it doesn't have a return. Type undefined must have a return
-function printResult(num: number) {
+function printResult2(num: number) {
   console.log('Result: ' + num)
 }
 
@@ -13,7 +13,7 @@ function addAndHandle(n1: number, n2: number, cb: (num: number) => void) {
   cb(result)
 }
 
-printResult(add(5, 12))
+printResult2(add2(5, 12))
 
 // let combinedValues: Function
 
@@ -25,7 +25,7 @@ printResult(add(5, 12))
 // set both parameters and result type of a function
 let combinedValues: (a: number, b: number) => number
 
-combinedValues = add // admissable
+combinedValues = add2 // admissable
 // combinedValues = printResult | error: printResult params and result types don't match
 
 

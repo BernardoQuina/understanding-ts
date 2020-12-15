@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "lite-server",
-    "watch": "tsc -w app.ts"
+    "watch": "tsc -w"
   },
   "author": "Bernardo-Quina <bernardoquina@gmail.com>",
   "license": "MIT",
