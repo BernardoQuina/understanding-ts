@@ -1,8 +1,8 @@
 // Decorators
 
-
+// Class decorators
 function Logger(logString: string) {
-  return function(constructor: Function) {
+  return function (constructor: Function) {
     console.log(logString)
     console.log(constructor)
   }
@@ -10,12 +10,19 @@ function Logger(logString: string) {
 
 function WithTemplate(selector: string, hookId: string) {
   console.log('Rendering template')
-  return function (constructor: any) {
-    const hookEl = document.getElementById(hookId)
-    const p = new constructor()
-    if (hookEl) {
-      hookEl.innerHTML =  `<${selector}></${selector}>`
-      hookEl.querySelector(selector)!.textContent = p.name
+  return function <T extends { new (...args: any[]): { name: string } }>(
+    originalConstructor: T
+  ) {
+    // Returning (and changing) a class in a class decorator
+    return class extends originalConstructor {
+      constructor(..._: any[]) {
+        super()
+        const hookEl = document.getElementById(hookId)
+        if (hookEl) {
+          hookEl.innerHTML = `<${selector}></${selector}>`
+          hookEl.querySelector(selector)!.textContent = this.name
+        }
+      }
     }
   }
 }
@@ -30,35 +37,46 @@ class PersonDecorators {
   }
 }
 
-const pers = new PersonDecorators
+const pers = new PersonDecorators()
 
 console.log(pers)
 
 // -----
 
-// property decorator
+// property decorator (cannot return)
 function Log(target: any, propertyName: string | Symbol) {
   console.log('Property decorator')
   console.log(target, propertyName)
 }
 
-// accessor decorator
-function Log2(target: any, name: string | Symbol, descriptor: PropertyDescriptor){
+// accessor decorator (can return)
+function Log2(
+  target: any,
+  name: string | Symbol,
+  descriptor: PropertyDescriptor
+) {
   console.log('Accessor decorator')
   console.log(target)
   console.log(name)
   console.log(descriptor)
 }
 
-// method decorator (similar to accessor)
-function Log3(target: any, name: string | Symbol, descriptor: PropertyDescriptor) {
+// method decorator (can return) (similar to accessor)
+function Log3(
+  target: any,
+  name: string | Symbol,
+  descriptor: PropertyDescriptor
+): PropertyDescriptor {
   console.log('Method decorator')
   console.log(target)
   console.log(name)
   console.log(descriptor)
+  return {
+    
+  }
 }
 
-// parameter decorator
+// parameter decorator (cannot return)
 function Log4(target: any, name: string | Symbol, position: number) {
   console.log('Parameter decorator')
   console.log(target)
@@ -90,3 +108,31 @@ class Product {
     return this._price * (1 + tax)
   }
 }
+
+function Autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
+  const originalMethod = descriptor.value
+  const adjustedDescriptor: PropertyDescriptor = {
+    configurable: true,
+    enumerable: false,
+    get() {
+      const boundFn = originalMethod.bind(this)
+      return boundFn
+    }
+  }
+  return adjustedDescriptor
+}
+
+class Printer {
+  message = 'This works!'
+
+  @Autobind
+  showMessage() {
+    console.log(this.message)
+  }
+}
+
+const p = new Printer()
+
+const button = document.querySelector('button')!
+
+button.addEventListener('click', p.showMessage)
