@@ -107,7 +107,7 @@ class Product {
   }
 }
 
-function Autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
+function Autobind2(_: any, _2: string, descriptor: PropertyDescriptor) {
   const originalMethod = descriptor.value
   const adjustedDescriptor: PropertyDescriptor = {
     configurable: true,
@@ -123,7 +123,7 @@ function Autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
 class Printer {
   message = 'This works!'
 
-  @Autobind
+  @Autobind2
   showMessage() {
     console.log(this.message)
   }
