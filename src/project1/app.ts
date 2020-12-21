@@ -1,12 +1,27 @@
+// Project Type
+enum ProjectStatus {
+  Active,
+  Finished,
+}
+
+class Project {
+  constructor(
+    public id: string,
+    public title: string,
+    public description: string,
+    public people: number,
+    public status: ProjectStatus
+  ) {}
+}
+
 // Project State Management
+type Listener = (items: Project[]) => void
 class ProjectState {
-  private listeners: any[] = []
-  private projects: any[] = []
+  private listeners: Listener[] = []
+  private projects: Project[] = []
   private static instance: ProjectState
 
-  private constructor () {
-
-  }
+  private constructor() {}
 
   static getInstance() {
     if (this.instance) {
@@ -16,17 +31,18 @@ class ProjectState {
     return this.instance
   }
 
-  addListener(listenerFn: Function) {
+  addListener(listenerFn: Listener) {
     this.listeners.push(listenerFn)
   }
 
   addProject(title: string, description: string, numPeople: number) {
-    const newProject = {
-      id: Math.random().toString(),
+    const newProject = new Project(
+      Math.random().toString(),
       title,
       description,
-      people: numPeople
-    }
+      numPeople,
+      ProjectStatus.Active
+    )
     this.projects.push(newProject)
     for (const listenerFn of this.listeners) {
       listenerFn(this.projects.slice())
@@ -57,21 +73,29 @@ function Validate(validatableInput: Validatable) {
     validatableInput.minLength != null &&
     typeof validatableInput.value === 'string'
   ) {
-    isValid = isValid && validatableInput.value.length >= validatableInput.minLength
+    isValid =
+      isValid && validatableInput.value.length >= validatableInput.minLength
   }
 
   if (
     validatableInput.maxLength != null &&
     typeof validatableInput.value === 'string'
   ) {
-    isValid = isValid && validatableInput.value.length <= validatableInput.maxLength
+    isValid =
+      isValid && validatableInput.value.length <= validatableInput.maxLength
   }
 
-  if (validatableInput.min != null && typeof validatableInput.value === 'number') {
+  if (
+    validatableInput.min != null &&
+    typeof validatableInput.value === 'number'
+  ) {
     isValid = isValid && validatableInput.value >= validatableInput.min
   }
 
-  if (validatableInput.max != null && typeof validatableInput.value === 'number') {
+  if (
+    validatableInput.max != null &&
+    typeof validatableInput.value === 'number'
+  ) {
     isValid = isValid && validatableInput.value <= validatableInput.max
   }
 
@@ -96,8 +120,7 @@ class ProjectList {
   templateElement: HTMLTemplateElement
   hostElement: HTMLDivElement
   element: HTMLElement
-  assignedProjects: any[]
-
+  assignedProjects: Project[]
 
   constructor(private type: 'active' | 'finished') {
     this.templateElement = document.getElementById(
@@ -111,8 +134,16 @@ class ProjectList {
     this.element = importedNode.firstElementChild as HTMLElement
     this.element.id = `${this.type}-projects`
 
-    projectState.addListener((projects: any[]) => {
-      this.assignedProjects = projects
+    projectState.addListener((projects: Project[]) => {
+      const filteredProjects = projects.filter(prj => {
+        if (this.type === 'active') {
+          return prj.status === ProjectStatus.Active
+        } else {
+          return prj.status === ProjectStatus.Finished
+        }
+        
+      })
+      this.assignedProjects = filteredProjects
       this.renderProjects()
     })
 
@@ -121,7 +152,12 @@ class ProjectList {
   }
 
   private renderProjects() {
-    const listEl = document.getElementById(`${this.type}-projects-list`)! as HTMLUListElement
+    const listEl = document.getElementById(
+      `${this.type}-projects-list`
+    )! as HTMLUListElement
+
+    listEl.innerHTML = ''
+
     for (const prjItem of this.assignedProjects) {
       const listItem = document.createElement('li')
       listItem.textContent = prjItem.title
@@ -132,7 +168,8 @@ class ProjectList {
   private renderContent() {
     const listId = `${this.type}-projects-list`
     this.element.querySelector('ul')!.id = listId
-    this.element.querySelector('h2')!.textContent = this.type.toUpperCase() + 'PROJECTS'
+    this.element.querySelector('h2')!.textContent =
+      this.type.toUpperCase() + ' PROJECTS'
   }
 
   private attach() {
@@ -181,21 +218,21 @@ class ProjectInput {
 
     const titleValidatable: Validatable = {
       value: enteredTitle,
-      required: true
+      required: true,
     }
 
     const descriptionValidatable: Validatable = {
       value: enteredDescription,
       required: true,
       minLength: 5,
-      maxLength: 100
+      maxLength: 100,
     }
 
     const peopleValidatable: Validatable = {
       value: +enteredPeople,
       required: true,
       min: 1,
-      max: 5
+      max: 10,
     }
 
     if (
