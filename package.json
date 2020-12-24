@@ -4,13 +4,14 @@
   "description": "Typescript Tutorial",
   "main": "index.js",
   "scripts": {
-    "start": "webpack serve",
+    "start": "webpack serve --config webpack.config.js --mode development",
     "watch": "tsc -w",
     "build": "webpack --config webpack.config.prod.js"
   },
   "author": "Bernardo-Quina <bernardoquina@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "@types/lodash": "^4.14.166",
     "clean-webpack-plugin": "^3.0.0",
     "lite-server": "^2.6.1",
     "ts-loader": "^8.0.12",
@@ -18,5 +19,8 @@
     "webpack": "^5.11.0",
     "webpack-cli": "^4.2.0",
     "webpack-dev-server": "^3.11.0"
+  },
+  "dependencies": {
+    "lodash": "^4.17.20"
   }
 }
