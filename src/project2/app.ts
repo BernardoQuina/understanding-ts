@@ -26,6 +26,14 @@ async function searchAddressHandler(event: Event) {
     }
 
     const coordinates = response.data.results[0].geometry.location
+
+    const map = new google.maps.Map(document.getElementById("map") as HTMLElement, {
+      center: coordinates,
+      zoom: 8,
+    })
+
+    new google.maps.Marker({position: coordinates, map: map})
+
   } catch (err) {
     alert(err.message)
     console.log(err)

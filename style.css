@@ -13,6 +13,10 @@ html {
   text-align: center;
 }
 
+#address {
+  border-radius: 8px;
+}
+
 form {
   text-align: center;
   margin: 2rem auto;

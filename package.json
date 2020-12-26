@@ -11,6 +11,7 @@
   "author": "Bernardo-Quina <bernardoquina@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "@types/googlemaps": "^3.43.0",
     "@types/lodash": "^4.14.166",
     "clean-webpack-plugin": "^3.0.0",
     "dotenv-webpack": "^6.0.0",

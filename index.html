@@ -9,7 +9,13 @@
       type="image/png"
       href="http://wydethemes.com/aoraki/wp-content/uploads/2017/01/cropped-favicon.png"
     />
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
+    <!-- only works with valid api key inserted bellow -->
+    <script
+      defer
+      src="https://maps.googleapis.com/maps/api/js?key=INSERT_GOOGLE_API_KEY"
+    ></script>
+
     <script src="dist/bundle.js" defer></script>
     <title>Document</title>
   </head>
@@ -18,7 +24,7 @@
       <p>Please enter an address!</p>
     </div>
     <form>
-      <input type="text" id="address">
+      <input type="text" id="address" />
       <button type="submit">SEARCH ADDRESS</button>
     </form>
   </body>
